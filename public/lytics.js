@@ -1,6 +1,7 @@
 var obj = {
   ua: navigator.userAgent,
   p: location.pathname,
+  h: location.hostname,
   ss: window.innerHeight + ' x ' + window.innerWidth,
   ls: (window.localStorage) ? 'true' : 'false'
 };
@@ -14,4 +15,4 @@ for (var d in obj) {
 
 qs = arr.join('&');
 
-new Image().src = 'http://localhost:4567/create?' + qs;
+new Image().src = 'http://lytics.ignoredbydinosaurs.com:4567/create?' + qs;

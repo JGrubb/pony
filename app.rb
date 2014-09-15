@@ -16,6 +16,15 @@ get '/create' do
   end
   params[:createdAt] = Time.now
   params[:uid] = cookies[:_ibd]
-  hourly.insert(params)
+
+  daily.ensure_index(:createdAt, expireAfterSeconds: 86400)
+  daily.ensure_index(:uid)
+  daily.ensure_index(:p)
+  daily.insert(params)
+
+  total.ensure_index(:uid)
+  total.ensure_index(:p)
+  total.insert(params)
+
   send_file File.expand_path('clear.gif', settings.public_folder)
 end

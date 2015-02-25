@@ -13,4 +13,4 @@ for (var d in obj) {
 
 qs = arr.join('&');
 
-new Image().src = 'http://127.0.0.1:4567/call?' + qs;
+new Image().src = '/call?' + qs;

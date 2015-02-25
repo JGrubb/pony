@@ -1,30 +1,25 @@
 require 'sinatra'
 require 'sinatra/contrib/all'
 require 'mongo'
-require 'digest'
+require 'securerandom'
 include Mongo
 
 mongo = MongoClient.new
 db = mongo['pony']
-hourly = db['hourly']
-daily = db['daily']
-total = db['total']
+pings = db['pings']
 
-get '/create' do
+get '/call' do
   if cookies[:_ibd].nil?
-    cookies[:_ibd] = Digest::SHA2.hexdigest Time.now.to_s
+    cookies[:_ibd] = SecureRandom.uuid
   end
   params[:createdAt] = Time.now
   params[:uid] = cookies[:_ibd]
 
-  daily.ensure_index(:createdAt, expireAfterSeconds: 86400)
-  daily.ensure_index(:uid)
-  daily.ensure_index(:p)
-  daily.insert(params)
-
-  total.ensure_index(:uid)
-  total.ensure_index(:p)
-  total.insert(params)
+  pings.ensure_index(:createdAt, expireAfterSeconds: 86400)
+  pings.ensure_index(:uid)
+  pings.ensure_index(:h)
+  pings.ensure_index(:p)
+  pings.insert(params)
 
   send_file File.expand_path('clear.gif', settings.public_folder)
 end

@@ -13,4 +13,4 @@ for (var d in obj) {
 
 qs = arr.join('&');
 
-new Image().src = '/call?' + qs;
+new Image().src = 'http://ping.ibdweb.net/call?' + qs;
